@@ -1,0 +1,120 @@
+<!DOCTYPE html> 
+<html lang="uk">
+<head>
+  <meta charset="UTF-8">
+  <title>Форма особистої інформації</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      padding: 20px;
+      background-color: #eef2f5;
+    }
+
+    form {
+      max-width: 400px;
+      margin: auto;
+      border: 1px solid #ccc;
+      padding: 20px;
+      border-radius: 10px;
+      background-color: #f9f9f9;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    }
+
+    label {
+      display: block;
+      margin-bottom: 5px;
+      font-weight: bold;
+    }
+
+    input[type="text"],
+    input[type="email"],
+    input[type="number"] {
+      width: 100%;
+      padding: 8px;
+      margin-bottom: 15px;
+      border: 1px solid #aaa;
+      border-radius: 5px;
+      box-sizing: border-box;
+    }
+
+    .error {
+      color: red;
+      margin-bottom: 10px;
+    }
+
+    button {
+      padding: 10px 15px;
+      background-color: #28a745;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background-color: #218838;
+    }
+  </style>
+</head>
+<body>
+
+  <h2>Форма особистої інформації</h2>
+
+  <form id="infoForm">
+    <div class="error" id="errorMessages"></div>
+
+    <label for="name">Ім’я:</label>
+    <input type="text" id="name" required>
+
+    <label for="email">Email:</label>
+    <input type="email" id="email" required>
+
+    <label for="age">Вік:</label>
+    <input type="number" id="age" required min="1">
+
+    <button type="submit">Submit</button>
+  </form>
+
+  <script>
+    const ageInput = document.getElementById("age");
+
+    ageInput.addEventListener("keydown", function (event) {
+      if ((event.key === "ArrowDown" || event.key === "Down") && ageInput.value === "") {
+        event.preventDefault();
+      }
+    });
+
+    document.getElementById("infoForm").addEventListener("submit", function(event) {
+      event.preventDefault();
+
+      const name = document.getElementById("name").value.trim();
+      const email = document.getElementById("email").value.trim();
+      const ageValue = document.getElementById("age").value;
+      const age = parseInt(ageValue);
+      const errorDiv = document.getElementById("errorMessages");
+
+      let errors = [];
+
+      if (!name) {
+        errors.push("Ім’я є обов’язковим.");
+      }
+
+      if (!email.includes("@")) {
+        errors.push("Email повинен містити '@'.");
+      }
+
+      if (!ageValue || isNaN(age) || age < 1) {
+        errors.push("Вік повинен бути числом більше 0.");
+      }
+
+      if (errors.length > 0) {
+        errorDiv.innerHTML = errors.join("<br>");
+      } else {
+        errorDiv.innerHTML = "";
+        alert("Form submitted!");
+      }
+    });
+  </script>
+
+</body>
+</html>
